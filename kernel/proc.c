@@ -62,8 +62,8 @@ procinit(void)
 int
 cpuid()
 {
-  int id = r_tp();
-  return id;
+	int id = r_tp();
+	return id;
 }
 
 // Return this CPU's cpu struct.

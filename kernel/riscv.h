@@ -2,9 +2,9 @@
 static inline uint64
 r_mhartid()
 {
-  uint64 x;
-  asm volatile("csrr %0, mhartid" : "=r" (x) );
-  return x;
+	uint64 x;
+	asm volatile("csrr %0, mhartid" : "=r" (x) );
+	return x;
 }
 
 // Machine Status Register, mstatus
@@ -18,24 +18,24 @@ r_mhartid()
 static inline uint64
 r_mstatus()
 {
-  uint64 x;
-  asm volatile("csrr %0, mstatus" : "=r" (x) );
-  return x;
+	uint64 x;
+	asm volatile("csrr %0, mstatus" : "=r" (x) );
+	return x;
 }
 
-static inline void 
+static inline void
 w_mstatus(uint64 x)
 {
-  asm volatile("csrw mstatus, %0" : : "r" (x));
+	asm volatile("csrw mstatus, %0" : : "r" (x));
 }
 
 // machine exception program counter, holds the
 // instruction address to which a return from
 // exception will go.
-static inline void 
+static inline void
 w_mepc(uint64 x)
 {
-  asm volatile("csrw mepc, %0" : : "r" (x));
+	asm volatile("csrw mepc, %0" : : "r" (x));
 }
 
 // Supervisor Status Register, sstatus
@@ -49,30 +49,30 @@ w_mepc(uint64 x)
 static inline uint64
 r_sstatus()
 {
-  uint64 x;
-  asm volatile("csrr %0, sstatus" : "=r" (x) );
-  return x;
+	uint64 x;
+	asm volatile("csrr %0, sstatus" : "=r" (x) );
+	return x;
 }
 
-static inline void 
+static inline void
 w_sstatus(uint64 x)
 {
-  asm volatile("csrw sstatus, %0" : : "r" (x));
+	asm volatile("csrw sstatus, %0" : : "r" (x));
 }
 
 // Supervisor Interrupt Pending
 static inline uint64
 r_sip()
 {
-  uint64 x;
-  asm volatile("csrr %0, sip" : "=r" (x) );
-  return x;
+	uint64 x;
+	asm volatile("csrr %0, sip" : "=r" (x) );
+	return x;
 }
 
-static inline void 
+static inline void
 w_sip(uint64 x)
 {
-  asm volatile("csrw sip, %0" : : "r" (x));
+	asm volatile("csrw sip, %0" : : "r" (x));
 }
 
 // Supervisor Interrupt Enable
@@ -82,15 +82,15 @@ w_sip(uint64 x)
 static inline uint64
 r_sie()
 {
-  uint64 x;
-  asm volatile("csrr %0, sie" : "=r" (x) );
-  return x;
+	uint64 x;
+	asm volatile("csrr %0, sie" : "=r" (x) );
+	return x;
 }
 
-static inline void 
+static inline void
 w_sie(uint64 x)
 {
-  asm volatile("csrw sie, %0" : : "r" (x));
+	asm volatile("csrw sie, %0" : : "r" (x));
 }
 
 // Machine-mode Interrupt Enable
@@ -100,82 +100,82 @@ w_sie(uint64 x)
 static inline uint64
 r_mie()
 {
-  uint64 x;
-  asm volatile("csrr %0, mie" : "=r" (x) );
-  return x;
+	uint64 x;
+	asm volatile("csrr %0, mie" : "=r" (x) );
+	return x;
 }
 
-static inline void 
+static inline void
 w_mie(uint64 x)
 {
-  asm volatile("csrw mie, %0" : : "r" (x));
+	asm volatile("csrw mie, %0" : : "r" (x));
 }
 
 // supervisor exception program counter, holds the
 // instruction address to which a return from
 // exception will go.
-static inline void 
+static inline void
 w_sepc(uint64 x)
 {
-  asm volatile("csrw sepc, %0" : : "r" (x));
+	asm volatile("csrw sepc, %0" : : "r" (x));
 }
 
 static inline uint64
 r_sepc()
 {
-  uint64 x;
-  asm volatile("csrr %0, sepc" : "=r" (x) );
-  return x;
+	uint64 x;
+	asm volatile("csrr %0, sepc" : "=r" (x) );
+	return x;
 }
 
 // Machine Exception Delegation
 static inline uint64
 r_medeleg()
 {
-  uint64 x;
-  asm volatile("csrr %0, medeleg" : "=r" (x) );
-  return x;
+	uint64 x;
+	asm volatile("csrr %0, medeleg" : "=r" (x) );
+	return x;
 }
 
-static inline void 
+static inline void
 w_medeleg(uint64 x)
 {
-  asm volatile("csrw medeleg, %0" : : "r" (x));
+	asm volatile("csrw medeleg, %0" : : "r" (x));
 }
 
 // Machine Interrupt Delegation
 static inline uint64
 r_mideleg()
 {
-  uint64 x;
-  asm volatile("csrr %0, mideleg" : "=r" (x) );
-  return x;
+	uint64 x;
+	asm volatile("csrr %0, mideleg" : "=r" (x) );
+	return x;
 }
 
-static inline void 
+static inline void
 w_mideleg(uint64 x)
 {
-  asm volatile("csrw mideleg, %0" : : "r" (x));
+	asm volatile("csrw mideleg, %0" : : "r" (x));
 }
 
 // Supervisor Trap-Vector Base Address
 // low two bits are mode.
-static inline void 
+static inline void
 w_stvec(uint64 x)
 {
-  asm volatile("csrw stvec, %0" : : "r" (x));
+	asm volatile("csrw stvec, %0" : : "r" (x));
 }
 
 static inline uint64
 r_stvec()
 {
-  uint64 x;
-  asm volatile("csrr %0, stvec" : "=r" (x) );
-  return x;
+	uint64 x;
+	asm volatile("csrr %0, stvec" : "=r" (x) );
+	return x;
 }
 
 // Machine-mode interrupt vector
-static inline void 
+static inline void
 w_mtvec(uint64 x)
 {
   asm volatile("csrw mtvec, %0" : : "r" (x));
@@ -304,15 +304,15 @@ r_sp()
 static inline uint64
 r_tp()
 {
-  uint64 x;
-  asm volatile("mv %0, tp" : "=r" (x) );
-  return x;
+	uint64 x;
+	asm volatile("mv %0, tp" : "=r" (x) );
+	return x;
 }
 
-static inline void 
+static inline void
 w_tp(uint64 x)
 {
-  asm volatile("mv tp, %0" : : "r" (x));
+	asm volatile("mv tp, %0" : : "r" (x));
 }
 
 static inline uint64
