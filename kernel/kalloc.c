@@ -15,12 +15,12 @@ extern char end[]; // first address after kernel.
                    // defined by kernel.ld.
 
 struct run {
-  struct run *next;
+	struct run *next;
 };
 
 struct {
-  struct spinlock lock;
-  struct run *freelist;
+	struct spinlock lock;
+	struct run *freelist;
 } kmem;
 
 void
@@ -68,15 +68,15 @@ kfree(void *pa)
 void *
 kalloc(void)
 {
-  struct run *r;
+	struct run *r;
 
-  acquire(&kmem.lock);
-  r = kmem.freelist;
-  if(r)
-    kmem.freelist = r->next;
-  release(&kmem.lock);
+	acquire(&kmem.lock);
+	r = kmem.freelist;
+	if(r)
+		kmem.freelist = r->next;
+	release(&kmem.lock);
 
-  if(r)
-    memset((char*)r, 5, PGSIZE); // fill with junk
-  return (void*)r;
+	if(r)
+		memset((char*)r, 5, PGSIZE); // fill with junk
+	return (void*)r;
 }
