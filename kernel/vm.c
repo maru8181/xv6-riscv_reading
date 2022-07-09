@@ -19,29 +19,29 @@ extern char trampoline[]; // trampoline.S
 pagetable_t
 kvmmake(void)
 {
-  pagetable_t kpgtbl;
+	pagetable_t kpgtbl;
 
-  kpgtbl = (pagetable_t) kalloc();
-  memset(kpgtbl, 0, PGSIZE);
+	kpgtbl = (pagetable_t) kalloc();
+	memset(kpgtbl, 0, PGSIZE);
 
-  // uart registers
-  kvmmap(kpgtbl, UART0, UART0, PGSIZE, PTE_R | PTE_W);
+	// uart registers
+	kvmmap(kpgtbl, UART0, UART0, PGSIZE, PTE_R | PTE_W);
 
-  // virtio mmio disk interface
-  kvmmap(kpgtbl, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);
+	// virtio mmio disk interface
+	kvmmap(kpgtbl, VIRTIO0, VIRTIO0, PGSIZE, PTE_R | PTE_W);
 
-  // PLIC
-  kvmmap(kpgtbl, PLIC, PLIC, 0x400000, PTE_R | PTE_W);
+	// PLIC
+	kvmmap(kpgtbl, PLIC, PLIC, 0x400000, PTE_R | PTE_W);
 
-  // map kernel text executable and read-only.
-  kvmmap(kpgtbl, KERNBASE, KERNBASE, (uint64)etext-KERNBASE, PTE_R | PTE_X);
+	// map kernel text executable and read-only.
+	kvmmap(kpgtbl, KERNBASE, KERNBASE, (uint64)etext-KERNBASE, PTE_R | PTE_X);
 
-  // map kernel data and the physical RAM we'll make use of.
-  kvmmap(kpgtbl, (uint64)etext, (uint64)etext, PHYSTOP-(uint64)etext, PTE_R | PTE_W);
+	// map kernel data and the physical RAM we'll make use of.
+	kvmmap(kpgtbl, (uint64)etext, (uint64)etext, PHYSTOP-(uint64)etext, PTE_R | PTE_W);
 
-  // map the trampoline for trap entry/exit to
-  // the highest virtual address in the kernel.
-  kvmmap(kpgtbl, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X);
+	// map the trampoline for trap entry/exit to
+	// the highest virtual address in the kernel.
+	kvmmap(kpgtbl, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X);
 
   // map kernel stacks
   proc_mapstacks(kpgtbl);
@@ -126,8 +126,8 @@ walkaddr(pagetable_t pagetable, uint64 va)
 void
 kvmmap(pagetable_t kpgtbl, uint64 va, uint64 pa, uint64 sz, int perm)
 {
-  if(mappages(kpgtbl, va, sz, pa, perm) != 0)
-    panic("kvmmap");
+	if(mappages(kpgtbl, va, sz, pa, perm) != 0)
+		panic("kvmmap");
 }
 
 // Create PTEs for virtual addresses starting at va that refer to
@@ -137,25 +137,25 @@ kvmmap(pagetable_t kpgtbl, uint64 va, uint64 pa, uint64 sz, int perm)
 int
 mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
 {
-  uint64 a, last;
-  pte_t *pte;
+	uint64 a, last;
+	pte_t *pte;
 
-  if(size == 0)
-    panic("mappages: size");
-  
-  a = PGROUNDDOWN(va);
-  last = PGROUNDDOWN(va + size - 1);
-  for(;;){
-    if((pte = walk(pagetable, a, 1)) == 0)
-      return -1;
-    if(*pte & PTE_V)
-      panic("mappages: remap");
-    *pte = PA2PTE(pa) | perm | PTE_V;
-    if(a == last)
-      break;
-    a += PGSIZE;
-    pa += PGSIZE;
-  }
+	if(size == 0)
+		panic("mappages: size");
+ 
+	a = PGROUNDDOWN(va);
+	last = PGROUNDDOWN(va + size - 1);
+	for(;;){
+		if((pte = walk(pagetable, a, 1)) == 0)
+			return -1;
+		if(*pte & PTE_V)
+			panic("mappages: remap");
+		*pte = PA2PTE(pa) | perm | PTE_V;
+		if(a == last)
+			break;
+		a += PGSIZE;
+		pa += PGSIZE;
+	}
   return 0;
 }
 

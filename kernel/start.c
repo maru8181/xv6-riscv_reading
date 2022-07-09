@@ -20,14 +20,14 @@ extern void timervec();
 void
 start()
 {
-  // set M Previous Privilege mode to Supervisor, for mret.
+	// set M Previous Privilege mode to Supervisor, for mret.
 	unsigned long x = r_mstatus();
 	x &= ~MSTATUS_MPP_MASK;
 	x |= MSTATUS_MPP_S;
 	w_mstatus(x);
 
-  // set M Exception Program Counter to main, for mret.
-  // requires gcc -mcmodel=medany
+	// set M Exception Program Counter to main, for mret.
+	// requires gcc -mcmodel=medany
 	w_mepc((uint64)main);
 
   // disable paging for now.
