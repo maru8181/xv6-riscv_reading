@@ -43,17 +43,17 @@ kvmmake(void)
 	// the highest virtual address in the kernel.
 	kvmmap(kpgtbl, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R | PTE_X);
 
-  // map kernel stacks
-  proc_mapstacks(kpgtbl);
-  
-  return kpgtbl;
+	// map kernel stacks
+	proc_mapstacks(kpgtbl);
+
+	return kpgtbl;
 }
 
 // Initialize the one kernel_pagetable
 void
 kvminit(void)
 {
-  kernel_pagetable = kvmmake();
+	kernel_pagetable = kvmmake();
 }
 
 // Switch h/w page table register to the kernel's page table,
@@ -61,8 +61,8 @@ kvminit(void)
 void
 kvminithart()
 {
-  w_satp(MAKE_SATP(kernel_pagetable));
-  sfence_vma();
+	w_satp(MAKE_SATP(kernel_pagetable));
+	sfence_vma();
 }
 
 // Return the address of the PTE in page table pagetable

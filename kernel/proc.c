@@ -31,29 +31,29 @@ struct spinlock wait_lock;
 // guard page.
 void
 proc_mapstacks(pagetable_t kpgtbl) {
-  struct proc *p;
-  
-  for(p = proc; p < &proc[NPROC]; p++) {
-    char *pa = kalloc();
-    if(pa == 0)
-      panic("kalloc");
-    uint64 va = KSTACK((int) (p - proc));
-    kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
-  }
+	struct proc *p;
+
+	for(p = proc; p < &proc[NPROC]; p++) {
+		char *pa = kalloc();
+		if(pa == 0)
+			panic("kalloc");
+		uint64 va = KSTACK((int) (p - proc));
+		kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
+	}
 }
 
 // initialize the proc table at boot time.
 void
 procinit(void)
 {
-  struct proc *p;
-  
-  initlock(&pid_lock, "nextpid");
-  initlock(&wait_lock, "wait_lock");
-  for(p = proc; p < &proc[NPROC]; p++) {
-      initlock(&p->lock, "proc");
-      p->kstack = KSTACK((int) (p - proc));
-  }
+	struct proc *p;
+
+	initlock(&pid_lock, "nextpid");
+	initlock(&wait_lock, "wait_lock");
+	for(p = proc; p < &proc[NPROC]; p++) {
+		initlock(&p->lock, "proc");
+		p->kstack = KSTACK((int) (p - proc));
+	}
 }
 
 // Must be called with interrupts disabled,
