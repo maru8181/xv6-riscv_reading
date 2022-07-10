@@ -19,14 +19,14 @@ extern int devintr();
 void
 trapinit(void)
 {
-  initlock(&tickslock, "time");
+	initlock(&tickslock, "time");
 }
 
 // set up to take exceptions and traps while in the kernel.
 void
 trapinithart(void)
 {
-  w_stvec((uint64)kernelvec);
+	w_stvec((uint64)kernelvec);
 }
 
 //
