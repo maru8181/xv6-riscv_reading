@@ -142,7 +142,7 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
 
 	if(size == 0)
 		panic("mappages: size");
- 
+
 	a = PGROUNDDOWN(va);
 	last = PGROUNDDOWN(va + size - 1);
 	for(;;){
@@ -191,12 +191,12 @@ uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
 pagetable_t
 uvmcreate()
 {
-  pagetable_t pagetable;
-  pagetable = (pagetable_t) kalloc();
-  if(pagetable == 0)
-    return 0;
-  memset(pagetable, 0, PGSIZE);
-  return pagetable;
+	pagetable_t pagetable;
+	pagetable = (pagetable_t) kalloc();
+	if(pagetable == 0)
+		return 0;
+	memset(pagetable, 0, PGSIZE);
+	return pagetable;
 }
 
 // Load the user initcode into address 0 of pagetable,
@@ -205,13 +205,13 @@ uvmcreate()
 void
 uvminit(pagetable_t pagetable, uchar *src, uint sz)
 {
-  char *mem;
+	char *mem;
 
-  if(sz >= PGSIZE)
-    panic("inituvm: more than a page");
-  mem = kalloc();
-  memset(mem, 0, PGSIZE);
-  mappages(pagetable, 0, PGSIZE, (uint64)mem, PTE_W|PTE_R|PTE_X|PTE_U);
+	if(sz >= PGSIZE)
+		panic("inituvm: more than a page");
+	mem = kalloc();
+	memset(mem, 0, PGSIZE);
+	mappages(pagetable, 0, PGSIZE, (uint64)mem, PTE_W|PTE_R|PTE_X|PTE_U);
   memmove(mem, src, sz);
 }
 
@@ -286,9 +286,9 @@ freewalk(pagetable_t pagetable)
 void
 uvmfree(pagetable_t pagetable, uint64 sz)
 {
-  if(sz > 0)
-    uvmunmap(pagetable, 0, PGROUNDUP(sz)/PGSIZE, 1);
-  freewalk(pagetable);
+	if(sz > 0)
+		uvmunmap(pagetable, 0, PGROUNDUP(sz)/PGSIZE, 1);
+	freewalk(pagetable);
 }
 
 // Given a parent process's page table, copy
