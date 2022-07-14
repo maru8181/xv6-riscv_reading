@@ -127,21 +127,21 @@ found:
 		return 0;
 	}
 
-  // An empty user page table.
-  p->pagetable = proc_pagetable(p);
-  if(p->pagetable == 0){
-    freeproc(p);
-    release(&p->lock);
-    return 0;
-  }
+	// An empty user page table.
+	p->pagetable = proc_pagetable(p);
+	if(p->pagetable == 0){
+		freeproc(p);
+		release(&p->lock);
+		return 0;
+	}
 
-  // Set up new context to start executing at forkret,
-  // which returns to user space.
-  memset(&p->context, 0, sizeof(p->context));
-  p->context.ra = (uint64)forkret;
-  p->context.sp = p->kstack + PGSIZE;
+	// Set up new context to start executing at forkret,
+	// which returns to user space.
+	memset(&p->context, 0, sizeof(p->context));
+	p->context.ra = (uint64)forkret;
+	p->context.sp = p->kstack + PGSIZE;
 
-  return p;
+	return p;
 }
 
 // free a proc structure and the data hanging from it,
@@ -171,32 +171,32 @@ freeproc(struct proc *p)
 pagetable_t
 proc_pagetable(struct proc *p)
 {
-  pagetable_t pagetable;
+	pagetable_t pagetable;
 
-  // An empty page table.
-  pagetable = uvmcreate();
-  if(pagetable == 0)
-    return 0;
+	// An empty page table.
+	pagetable = uvmcreate();
+	if(pagetable == 0)
+		return 0;
 
-  // map the trampoline code (for system call return)
-  // at the highest user virtual address.
-  // only the supervisor uses it, on the way
-  // to/from user space, so not PTE_U.
-  if(mappages(pagetable, TRAMPOLINE, PGSIZE,
-              (uint64)trampoline, PTE_R | PTE_X) < 0){
-    uvmfree(pagetable, 0);
-    return 0;
-  }
+	// map the trampoline code (for system call return)
+	// at the highest user virtual address.
+	// only the supervisor uses it, on the way
+	// to/from user space, so not PTE_U.
+	if(mappages(pagetable, TRAMPOLINE, PGSIZE,
+				(uint64)trampoline, PTE_R | PTE_X) < 0){
+		uvmfree(pagetable, 0);
+		return 0;
+	}
 
-  // map the trapframe just below TRAMPOLINE, for trampoline.S.
-  if(mappages(pagetable, TRAPFRAME, PGSIZE,
-              (uint64)(p->trapframe), PTE_R | PTE_W) < 0){
-    uvmunmap(pagetable, TRAMPOLINE, 1, 0);
-    uvmfree(pagetable, 0);
-    return 0;
-  }
+	// map the trapframe just below TRAMPOLINE, for trampoline.S.
+	if(mappages(pagetable, TRAPFRAME, PGSIZE,
+				(uint64)(p->trapframe), PTE_R | PTE_W) < 0){
+		uvmunmap(pagetable, TRAMPOLINE, 1, 0);
+		uvmfree(pagetable, 0);
+		return 0;
+	}
 
-  return pagetable;
+	return pagetable;
 }
 
 // Free a process's page table, and free the
@@ -227,24 +227,24 @@ userinit(void)
 {
 	struct proc *p;
 
-  p = allocproc();
-  initproc = p;
-  
-  // allocate one user page and copy init's instructions
-  // and data into it.
-  uvminit(p->pagetable, initcode, sizeof(initcode));
-  p->sz = PGSIZE;
+	p = allocproc();
+	initproc = p;
 
-  // prepare for the very first "return" from kernel to user.
-  p->trapframe->epc = 0;      // user program counter
-  p->trapframe->sp = PGSIZE;  // user stack pointer
+	// allocate one user page and copy init's instructions
+	// and data into it.
+  uvminit(p->pagetable, initcode, sizeof(initcode));
+	p->sz = PGSIZE;
+
+	// prepare for the very first "return" from kernel to user.
+	p->trapframe->epc = 0;      // user program counter
+	p->trapframe->sp = PGSIZE;  // user stack pointer
 
   safestrcpy(p->name, "initcode", sizeof(p->name));
-  p->cwd = namei("/");
+	p->cwd = namei("/");
 
-  p->state = RUNNABLE;
+	p->state = RUNNABLE;
 
-  release(&p->lock);
+	release(&p->lock);
 }
 
 // Grow or shrink user memory by n bytes.
