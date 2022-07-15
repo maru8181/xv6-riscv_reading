@@ -273,7 +273,7 @@ r_time()
 static inline void
 intr_on()
 {
-  w_sstatus(r_sstatus() | SSTATUS_SIE);
+	w_sstatus(r_sstatus() | SSTATUS_SIE);
 }
 
 // disable device interrupts
