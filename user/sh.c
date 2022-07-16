@@ -57,27 +57,27 @@ struct cmd *parsecmd(char*);
 void
 runcmd(struct cmd *cmd)
 {
-  int p[2];
-  struct backcmd *bcmd;
-  struct execcmd *ecmd;
-  struct listcmd *lcmd;
-  struct pipecmd *pcmd;
-  struct redircmd *rcmd;
+	int p[2];
+	struct backcmd *bcmd;
+	struct execcmd *ecmd;
+	struct listcmd *lcmd;
+	struct pipecmd *pcmd;
+	struct redircmd *rcmd;
 
-  if(cmd == 0)
-    exit(1);
+	if(cmd == 0)
+		exit(1);
 
-  switch(cmd->type){
-  default:
-    panic("runcmd");
+	switch(cmd->type){
+	default:
+		panic("runcmd");
 
-  case EXEC:
-    ecmd = (struct execcmd*)cmd;
-    if(ecmd->argv[0] == 0)
-      exit(1);
-    exec(ecmd->argv[0], ecmd->argv);
-    fprintf(2, "exec %s failed\n", ecmd->argv[0]);
-    break;
+	case EXEC:
+		ecmd = (struct execcmd*)cmd;
+		if(ecmd->argv[0] == 0)
+			exit(1);
+		exec(ecmd->argv[0], ecmd->argv);
+		fprintf(2, "exec %s failed\n", ecmd->argv[0]);
+		break;
 
   case REDIR:
     rcmd = (struct redircmd*)cmd;
@@ -144,30 +144,30 @@ getcmd(char *buf, int nbuf)
 int
 main(void)
 {
-  static char buf[100];
-  int fd;
+	static char buf[100];
+	int fd;
 
-  // Ensure that three file descriptors are open.
-  while((fd = open("console", O_RDWR)) >= 0){
-    if(fd >= 3){
-      close(fd);
-      break;
-    }
-  }
+	// Ensure that three file descriptors are open.
+	while((fd = open("console", O_RDWR)) >= 0){
+		if(fd >= 3){
+			close(fd);
+			break;
+		}
+	}
 
-  // Read and run input commands.
-  while(getcmd(buf, sizeof(buf)) >= 0){
-    if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){
-      // Chdir must be called by the parent, not the child.
-      buf[strlen(buf)-1] = 0;  // chop \n
-      if(chdir(buf+3) < 0)
-        fprintf(2, "cannot cd %s\n", buf+3);
-      continue;
-    }
-    if(fork1() == 0)
-      runcmd(parsecmd(buf));
-    wait(0);
-  }
+	// Read and run input commands.
+	while(getcmd(buf, sizeof(buf)) >= 0){
+		if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){
+			// Chdir must be called by the parent, not the child.
+			buf[strlen(buf)-1] = 0;  // chop \n
+			if(chdir(buf+3) < 0)
+				fprintf(2, "cannot cd %s\n", buf+3);
+			continue;
+		}
+		if(fork1() == 0)
+			runcmd(parsecmd(buf));
+		wait(0);
+	}
   exit(0);
 }
 
@@ -181,12 +181,12 @@ panic(char *s)
 int
 fork1(void)
 {
-  int pid;
+	int pid;
 
-  pid = fork();
-  if(pid == -1)
-    panic("fork");
-  return pid;
+	pid = fork();
+	if(pid == -1)
+		panic("fork");
+	return pid;
 }
 
 //PAGEBREAK!
