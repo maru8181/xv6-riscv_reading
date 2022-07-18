@@ -323,14 +323,14 @@ fork(void)
 void
 reparent(struct proc *p)
 {
-  struct proc *pp;
+	struct proc *pp;
 
-  for(pp = proc; pp < &proc[NPROC]; pp++){
-    if(pp->parent == p){
-      pp->parent = initproc;
-      wakeup(initproc);
-    }
-  }
+	for(pp = proc; pp < &proc[NPROC]; pp++){
+		if(pp->parent == p){
+			pp->parent = initproc;
+			wakeup(initproc);
+		}
+	}
 }
 
 // Exit the current process.  Does not return.
@@ -339,43 +339,43 @@ reparent(struct proc *p)
 void
 exit(int status)
 {
-  struct proc *p = myproc();
+	struct proc *p = myproc();
 
-  if(p == initproc)
-    panic("init exiting");
+	if(p == initproc)
+		panic("init exiting");
 
-  // Close all open files.
-  for(int fd = 0; fd < NOFILE; fd++){
-    if(p->ofile[fd]){
-      struct file *f = p->ofile[fd];
-      fileclose(f);
-      p->ofile[fd] = 0;
-    }
-  }
+	// Close all open files.
+	for(int fd = 0; fd < NOFILE; fd++){
+		if(p->ofile[fd]){
+			struct file *f = p->ofile[fd];
+			fileclose(f);
+			p->ofile[fd] = 0;
+		}
+	}
 
   begin_op();
   iput(p->cwd);
   end_op();
   p->cwd = 0;
 
-  acquire(&wait_lock);
+	acquire(&wait_lock);
 
-  // Give any children to init.
-  reparent(p);
+	// Give any children to init.
+	reparent(p);
 
-  // Parent might be sleeping in wait().
-  wakeup(p->parent);
-  
-  acquire(&p->lock);
+	// Parent might be sleeping in wait().
+	wakeup(p->parent);
+
+	acquire(&p->lock);
 
   p->xstate = status;
-  p->state = ZOMBIE;
+	p->state = ZOMBIE;
 
-  release(&wait_lock);
+	release(&wait_lock);
 
   // Jump into the scheduler, never to return.
-  sched();
-  panic("zombie exit");
+	sched();
+	panic("zombie exit");
 }
 
 // Wait for a child process to exit and return its pid.
@@ -559,17 +559,17 @@ sleep(void *chan, struct spinlock *lk)
 void
 wakeup(void *chan)
 {
-  struct proc *p;
+	struct proc *p;
 
-  for(p = proc; p < &proc[NPROC]; p++) {
-    if(p != myproc()){
-      acquire(&p->lock);
-      if(p->state == SLEEPING && p->chan == chan) {
-        p->state = RUNNABLE;
-      }
-      release(&p->lock);
-    }
-  }
+	for(p = proc; p < &proc[NPROC]; p++) {
+		if(p != myproc()){
+			acquire(&p->lock);
+			if(p->state == SLEEPING && p->chan == chan) {
+				p->state = RUNNABLE;
+			}
+			release(&p->lock);
+		}
+	}
 }
 
 // Kill the process with the given pid.
