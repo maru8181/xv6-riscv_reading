@@ -34,31 +34,31 @@ fetchstr(uint64 addr, char *buf, int max)
 static uint64
 argraw(int n)
 {
-  struct proc *p = myproc();
-  switch (n) {
-  case 0:
-    return p->trapframe->a0;
-  case 1:
-    return p->trapframe->a1;
-  case 2:
-    return p->trapframe->a2;
-  case 3:
-    return p->trapframe->a3;
-  case 4:
-    return p->trapframe->a4;
-  case 5:
-    return p->trapframe->a5;
-  }
-  panic("argraw");
-  return -1;
+	struct proc *p = myproc();
+	switch (n) {
+	case 0:
+		return p->trapframe->a0;
+	case 1:
+		return p->trapframe->a1;
+	case 2:
+		return p->trapframe->a2;
+	case 3:
+		return p->trapframe->a3;
+	case 4:
+		return p->trapframe->a4;
+	case 5:
+		return p->trapframe->a5;
+	}
+	panic("argraw");
+	return -1;
 }
 
 // Fetch the nth 32-bit system call argument.
 int
 argint(int n, int *ip)
 {
-  *ip = argraw(n);
-  return 0;
+	*ip = argraw(n);
+	return 0;
 }
 
 // Retrieve an argument as a pointer.
@@ -132,15 +132,15 @@ static uint64 (*syscalls[])(void) = {
 void
 syscall(void)
 {
-  int num;
-  struct proc *p = myproc();
+	int num;
+	struct proc *p = myproc();
 
-  num = p->trapframe->a7;
-  if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
-    p->trapframe->a0 = syscalls[num]();
-  } else {
-    printf("%d %s: unknown sys call %d\n",
-            p->pid, p->name, num);
-    p->trapframe->a0 = -1;
-  }
+	num = p->trapframe->a7;
+	if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
+		p->trapframe->a0 = syscalls[num]();
+	} else {
+		printf("%d %s: unknown sys call %d\n",
+				p->pid, p->name, num);
+		p->trapframe->a0 = -1;
+	}
 }
