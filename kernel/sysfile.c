@@ -21,18 +21,18 @@
 static int
 argfd(int n, int *pfd, struct file **pf)
 {
-  int fd;
-  struct file *f;
+	int fd;
+	struct file *f;
 
-  if(argint(n, &fd) < 0)
-    return -1;
-  if(fd < 0 || fd >= NOFILE || (f=myproc()->ofile[fd]) == 0)
-    return -1;
-  if(pfd)
-    *pfd = fd;
-  if(pf)
-    *pf = f;
-  return 0;
+	if(argint(n, &fd) < 0)
+		return -1;
+	if(fd < 0 || fd >= NOFILE || (f=myproc()->ofile[fd]) == 0)
+		return -1;
+	if(pfd)
+		*pfd = fd;
+	if(pf)
+		*pf = f;
+	return 0;
 }
 
 // Allocate a file descriptor for the given file.
@@ -40,30 +40,30 @@ argfd(int n, int *pfd, struct file **pf)
 static int
 fdalloc(struct file *f)
 {
-  int fd;
-  struct proc *p = myproc();
+	int fd;
+	struct proc *p = myproc();
 
-  for(fd = 0; fd < NOFILE; fd++){
-    if(p->ofile[fd] == 0){
-      p->ofile[fd] = f;
-      return fd;
-    }
-  }
-  return -1;
+	for(fd = 0; fd < NOFILE; fd++){
+		if(p->ofile[fd] == 0){
+			p->ofile[fd] = f;
+			return fd;
+		}
+	}
+	return -1;
 }
 
 uint64
 sys_dup(void)
 {
-  struct file *f;
-  int fd;
+	struct file *f;
+	int fd;
 
-  if(argfd(0, 0, &f) < 0)
-    return -1;
-  if((fd=fdalloc(f)) < 0)
-    return -1;
-  filedup(f);
-  return fd;
+	if(argfd(0, 0, &f) < 0)
+		return -1;
+	if((fd=fdalloc(f)) < 0)
+		return -1;
+	filedup(f);
+	return fd;
 }
 
 uint64
