@@ -94,25 +94,25 @@ sys_write(void)
 uint64
 sys_close(void)
 {
-  int fd;
-  struct file *f;
+	int fd;
+	struct file *f;
 
-  if(argfd(0, &fd, &f) < 0)
-    return -1;
-  myproc()->ofile[fd] = 0;
-  fileclose(f);
-  return 0;
+	if(argfd(0, &fd, &f) < 0)
+		return -1;
+	myproc()->ofile[fd] = 0;
+	fileclose(f);
+	return 0;
 }
 
 uint64
 sys_fstat(void)
 {
-  struct file *f;
-  uint64 st; // user pointer to struct stat
+	struct file *f;
+	uint64 st; // user pointer to struct stat
 
-  if(argfd(0, 0, &f) < 0 || argaddr(1, &st) < 0)
-    return -1;
-  return filestat(f, st);
+	if(argfd(0, 0, &f) < 0 || argaddr(1, &st) < 0)
+		return -1;
+	return filestat(f, st);
 }
 
 // Create the path new as a link to the same inode as old.
