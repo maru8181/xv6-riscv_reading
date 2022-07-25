@@ -441,11 +441,11 @@ itrunc(struct inode *ip)
 void
 stati(struct inode *ip, struct stat *st)
 {
-  st->dev = ip->dev;
-  st->ino = ip->inum;
-  st->type = ip->type;
-  st->nlink = ip->nlink;
-  st->size = ip->size;
+	st->dev = ip->dev;
+	st->ino = ip->inum;
+	st->type = ip->type;
+	st->nlink = ip->nlink;
+	st->size = ip->size;
 }
 
 // Read data from inode.

@@ -59,27 +59,27 @@ filedup(struct file *f)
 void
 fileclose(struct file *f)
 {
-  struct file ff;
+	struct file ff;
 
-  acquire(&ftable.lock);
-  if(f->ref < 1)
-    panic("fileclose");
-  if(--f->ref > 0){
-    release(&ftable.lock);
-    return;
-  }
-  ff = *f;
-  f->ref = 0;
-  f->type = FD_NONE;
-  release(&ftable.lock);
+	acquire(&ftable.lock);
+	if(f->ref < 1)
+		panic("fileclose");
+	if(--f->ref > 0){
+		release(&ftable.lock);
+		return;
+	}
+	ff = *f;
+	f->ref = 0;
+	f->type = FD_NONE;
+	release(&ftable.lock);
 
-  if(ff.type == FD_PIPE){
-    pipeclose(ff.pipe, ff.writable);
-  } else if(ff.type == FD_INODE || ff.type == FD_DEVICE){
-    begin_op();
-    iput(ff.ip);
-    end_op();
-  }
+	if(ff.type == FD_PIPE){
+		pipeclose(ff.pipe, ff.writable);
+	} else if(ff.type == FD_INODE || ff.type == FD_DEVICE){
+		begin_op();
+		iput(ff.ip);
+		end_op();
+	}
 }
 
 // Get metadata about file f.
@@ -87,18 +87,18 @@ fileclose(struct file *f)
 int
 filestat(struct file *f, uint64 addr)
 {
-  struct proc *p = myproc();
-  struct stat st;
-  
-  if(f->type == FD_INODE || f->type == FD_DEVICE){
-    ilock(f->ip);
-    stati(f->ip, &st);
-    iunlock(f->ip);
-    if(copyout(p->pagetable, addr, (char *)&st, sizeof(st)) < 0)
-      return -1;
-    return 0;
-  }
-  return -1;
+	struct proc *p = myproc();
+	struct stat st;
+
+	if(f->type == FD_INODE || f->type == FD_DEVICE){
+		ilock(f->ip);
+		stati(f->ip, &st);
+		iunlock(f->ip);
+		if(copyout(p->pagetable, addr, (char *)&st, sizeof(st)) < 0)
+			return -1;
+		return 0;
+	}
+	return -1;
 }
 
 // Read from file f.
