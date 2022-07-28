@@ -361,8 +361,8 @@ iput(struct inode *ip)
 void
 iunlockput(struct inode *ip)
 {
-  iunlock(ip);
-  iput(ip);
+	iunlock(ip);
+	iput(ip);
 }
 
 // Inode content
