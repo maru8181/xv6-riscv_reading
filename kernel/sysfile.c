@@ -358,10 +358,10 @@ sys_mkdir(void)
 	struct inode *ip;
 
 	begin_op();
-  if(argstr(0, path, MAXPATH) < 0 || (ip = create(path, T_DIR, 0, 0)) == 0){
-	  end_op();
-	  return -1;
-  }
+	if(argstr(0, path, MAXPATH) < 0 || (ip = create(path, T_DIR, 0, 0)) == 0){
+		end_op();
+		return -1;
+	}
 	iunlockput(ip);
 	end_op();
 	return 0;
