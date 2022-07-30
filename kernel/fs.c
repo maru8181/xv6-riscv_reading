@@ -277,10 +277,10 @@ iget(uint dev, uint inum)
 struct inode*
 idup(struct inode *ip)
 {
-  acquire(&itable.lock);
-  ip->ref++;
-  release(&itable.lock);
-  return ip;
+	acquire(&itable.lock);
+	ip->ref++;
+	release(&itable.lock);
+	return ip;
 }
 
 // Lock the given inode.
