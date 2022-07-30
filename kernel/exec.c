@@ -12,31 +12,31 @@ static int loadseg(pde_t *pgdir, uint64 addr, struct inode *ip, uint offset, uin
 int
 exec(char *path, char **argv)
 {
-  char *s, *last;
-  int i, off;
-  uint64 argc, sz = 0, sp, ustack[MAXARG], stackbase;
-  struct elfhdr elf;
-  struct inode *ip;
-  struct proghdr ph;
-  pagetable_t pagetable = 0, oldpagetable;
-  struct proc *p = myproc();
+	char *s, *last;
+	int i, off;
+	uint64 argc, sz = 0, sp, ustack[MAXARG], stackbase;
+	struct elfhdr elf;
+	struct inode *ip;
+	struct proghdr ph;
+	pagetable_t pagetable = 0, oldpagetable;
+	struct proc *p = myproc();
 
-  begin_op();
+	begin_op();
 
-  if((ip = namei(path)) == 0){
-    end_op();
-    return -1;
-  }
-  ilock(ip);
+	if((ip = namei(path)) == 0){
+		end_op();
+		return -1;
+	}
+	ilock(ip);
 
-  // Check ELF header
-  if(readi(ip, 0, (uint64)&elf, 0, sizeof(elf)) != sizeof(elf))
-    goto bad;
-  if(elf.magic != ELF_MAGIC)
-    goto bad;
+	// Check ELF header
+	if(readi(ip, 0, (uint64)&elf, 0, sizeof(elf)) != sizeof(elf))
+		goto bad;
+	if(elf.magic != ELF_MAGIC)
+		goto bad;
 
-  if((pagetable = proc_pagetable(p)) == 0)
-    goto bad;
+	if((pagetable = proc_pagetable(p)) == 0)
+		goto bad;
 
   // Load program into memory.
   for(i=0, off=elf.phoff; i<elf.phnum; i++, off+=sizeof(ph)){
