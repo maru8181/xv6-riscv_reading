@@ -272,50 +272,50 @@ growproc(int n)
 int
 fork(void)
 {
-  int i, pid;
-  struct proc *np;
-  struct proc *p = myproc();
+	int i, pid;
+	struct proc *np;
+	struct proc *p = myproc();
 
-  // Allocate process.
-  if((np = allocproc()) == 0){
-    return -1;
-  }
+	// Allocate process.
+	if((np = allocproc()) == 0){
+		return -1;
+	}
 
-  // Copy user memory from parent to child.
-  if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0){
-    freeproc(np);
-    release(&np->lock);
-    return -1;
-  }
-  np->sz = p->sz;
+	// Copy user memory from parent to child.
+	if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0){
+		freeproc(np);
+		release(&np->lock);
+		return -1;
+	}
+	np->sz = p->sz;
 
-  // copy saved user registers.
-  *(np->trapframe) = *(p->trapframe);
+	// copy saved user registers.
+	*(np->trapframe) = *(p->trapframe);
 
-  // Cause fork to return 0 in the child.
-  np->trapframe->a0 = 0;
+	// Cause fork to return 0 in the child.
+	np->trapframe->a0 = 0;
 
-  // increment reference counts on open file descriptors.
-  for(i = 0; i < NOFILE; i++)
-    if(p->ofile[i])
-      np->ofile[i] = filedup(p->ofile[i]);
-  np->cwd = idup(p->cwd);
+	// increment reference counts on open file descriptors.
+	for(i = 0; i < NOFILE; i++)
+		if(p->ofile[i])
+			np->ofile[i] = filedup(p->ofile[i]);
+	np->cwd = idup(p->cwd);
 
-  safestrcpy(np->name, p->name, sizeof(p->name));
+	safestrcpy(np->name, p->name, sizeof(p->name));
 
-  pid = np->pid;
+	pid = np->pid;
 
-  release(&np->lock);
+	release(&np->lock);
 
-  acquire(&wait_lock);
-  np->parent = p;
-  release(&wait_lock);
+	acquire(&wait_lock);
+	np->parent = p;
+	release(&wait_lock);
 
-  acquire(&np->lock);
-  np->state = RUNNABLE;
-  release(&np->lock);
+	acquire(&np->lock);
+	np->state = RUNNABLE;
+	release(&np->lock);
 
-  return pid;
+	return pid;
 }
 
 // Pass p's abandoned children to init.

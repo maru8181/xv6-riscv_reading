@@ -20,13 +20,13 @@ sys_exit(void)
 uint64
 sys_getpid(void)
 {
-  return myproc()->pid;
+	return myproc()->pid;
 }
 
 uint64
 sys_fork(void)
 {
-  return fork();
+	return fork();
 }
 
 uint64
