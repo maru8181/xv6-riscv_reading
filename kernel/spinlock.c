@@ -88,12 +88,12 @@ holding(struct spinlock *lk)
 void
 push_off(void)
 {
-  int old = intr_get();
+	int old = intr_get();
 
-  intr_off();
-  if(mycpu()->noff == 0)
-    mycpu()->intena = old;
-  mycpu()->noff += 1;
+	intr_off();
+	if(mycpu()->noff == 0)
+		mycpu()->intena = old;
+	mycpu()->noff += 1;
 }
 
 void

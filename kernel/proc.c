@@ -78,11 +78,11 @@ mycpu(void) {
 // Return the current struct proc *, or zero if none.
 struct proc*
 myproc(void) {
-  push_off();
-  struct cpu *c = mycpu();
-  struct proc *p = c->proc;
-  pop_off();
-  return p;
+	push_off();
+	struct cpu *c = mycpu();
+	struct proc *p = c->proc;
+	pop_off();
+	return p;
 }
 
 int

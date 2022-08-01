@@ -280,15 +280,15 @@ intr_on()
 static inline void
 intr_off()
 {
-  w_sstatus(r_sstatus() & ~SSTATUS_SIE);
+	w_sstatus(r_sstatus() & ~SSTATUS_SIE);
 }
 
 // are device interrupts enabled?
 static inline int
 intr_get()
 {
-  uint64 x = r_sstatus();
-  return (x & SSTATUS_SIE) != 0;
+	uint64 x = r_sstatus();
+	return (x & SSTATUS_SIE) != 0;
 }
 
 static inline uint64
