@@ -353,10 +353,10 @@ exit(int status)
 		}
 	}
 
-  begin_op();
-  iput(p->cwd);
-  end_op();
-  p->cwd = 0;
+	begin_op();
+	iput(p->cwd);
+	end_op();
+	p->cwd = 0;
 
 	acquire(&wait_lock);
 
@@ -368,7 +368,7 @@ exit(int status)
 
 	acquire(&p->lock);
 
-  p->xstate = status;
+	p->xstate = status;
 	p->state = ZOMBIE;
 
 	release(&wait_lock);
