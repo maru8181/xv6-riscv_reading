@@ -32,10 +32,10 @@ sys_fork(void)
 uint64
 sys_wait(void)
 {
-  uint64 p;
-  if(argaddr(0, &p) < 0)
-    return -1;
-  return wait(p);
+	uint64 p;
+	if(argaddr(0, &p) < 0)
+		return -1;
+	return wait(p);
 }
 
 uint64
