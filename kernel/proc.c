@@ -528,30 +528,30 @@ forkret(void)
 void
 sleep(void *chan, struct spinlock *lk)
 {
-  struct proc *p = myproc();
+	struct proc *p = myproc();
 
-  // Must acquire p->lock in order to
-  // change p->state and then call sched.
-  // Once we hold p->lock, we can be
-  // guaranteed that we won't miss any wakeup
-  // (wakeup locks p->lock),
-  // so it's okay to release lk.
+	// Must acquire p->lock in order to
+	// change p->state and then call sched.
+	// Once we hold p->lock, we can be
+	// guaranteed that we won't miss any wakeup
+	// (wakeup locks p->lock),
+	// so it's okay to release lk.
 
-  acquire(&p->lock);  //DOC: sleeplock1
-  release(lk);
+	acquire(&p->lock);  //DOC: sleeplock1
+	release(lk);
 
-  // Go to sleep.
-  p->chan = chan;
-  p->state = SLEEPING;
+	// Go to sleep.
+	p->chan = chan;
+	p->state = SLEEPING;
 
-  sched();
+	sched();
 
-  // Tidy up.
-  p->chan = 0;
+	// Tidy up.
+	p->chan = 0;
 
-  // Reacquire original lock.
-  release(&p->lock);
-  acquire(lk);
+	// Reacquire original lock.
+	release(&p->lock);
+	acquire(lk);
 }
 
 // Wake up all processes sleeping on chan.
