@@ -76,11 +76,11 @@ sys_sleep(void)
 uint64
 sys_kill(void)
 {
-  int pid;
+	int pid;
 
-  if(argint(0, &pid) < 0)
-    return -1;
-  return kill(pid);
+	if(argint(0, &pid) < 0)
+		return -1;
+	return kill(pid);
 }
 
 // return how many clock tick interrupts have occurred
