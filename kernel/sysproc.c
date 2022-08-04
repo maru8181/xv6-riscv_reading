@@ -88,10 +88,10 @@ sys_kill(void)
 uint64
 sys_uptime(void)
 {
-  uint xticks;
+	uint xticks;
 
-  acquire(&tickslock);
-  xticks = ticks;
-  release(&tickslock);
-  return xticks;
+	acquire(&tickslock);
+	xticks = ticks;
+	release(&tickslock);
+	return xticks;
 }
