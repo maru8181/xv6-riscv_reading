@@ -29,18 +29,18 @@ fileinit(void)
 struct file*
 filealloc(void)
 {
-  struct file *f;
+	struct file *f;
 
-  acquire(&ftable.lock);
-  for(f = ftable.file; f < ftable.file + NFILE; f++){
-    if(f->ref == 0){
-      f->ref = 1;
-      release(&ftable.lock);
-      return f;
-    }
-  }
-  release(&ftable.lock);
-  return 0;
+	acquire(&ftable.lock);
+	for(f = ftable.file; f < ftable.file + NFILE; f++){
+		if(f->ref == 0){
+			f->ref = 1;
+			release(&ftable.lock);
+			return f;
+		}
+	}
+	release(&ftable.lock);
+	return 0;
 }
 
 // Increment ref count for file f.

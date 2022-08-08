@@ -457,16 +457,16 @@ bad:
 uint64
 sys_pipe(void)
 {
-  uint64 fdarray; // user pointer to array of two integers
-  struct file *rf, *wf;
-  int fd0, fd1;
-  struct proc *p = myproc();
+	uint64 fdarray; // user pointer to array of two integers
+	struct file *rf, *wf;
+	int fd0, fd1;
+	struct proc *p = myproc();
 
-  if(argaddr(0, &fdarray) < 0)
-    return -1;
-  if(pipealloc(&rf, &wf) < 0)
-    return -1;
-  fd0 = -1;
+	if(argaddr(0, &fdarray) < 0)
+		return -1;
+	if(pipealloc(&rf, &wf) < 0)
+		return -1;
+	fd0 = -1;
   if((fd0 = fdalloc(rf)) < 0 || (fd1 = fdalloc(wf)) < 0){
     if(fd0 >= 0)
       p->ofile[fd0] = 0;
