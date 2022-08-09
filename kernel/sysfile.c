@@ -390,26 +390,26 @@ sys_mknod(void)
 uint64
 sys_chdir(void)
 {
-  char path[MAXPATH];
-  struct inode *ip;
-  struct proc *p = myproc();
-  
-  begin_op();
-  if(argstr(0, path, MAXPATH) < 0 || (ip = namei(path)) == 0){
-    end_op();
-    return -1;
-  }
-  ilock(ip);
-  if(ip->type != T_DIR){
-    iunlockput(ip);
-    end_op();
-    return -1;
-  }
-  iunlock(ip);
-  iput(p->cwd);
-  end_op();
-  p->cwd = ip;
-  return 0;
+	char path[MAXPATH];
+	struct inode *ip;
+	struct proc *p = myproc();
+
+	begin_op();
+	if(argstr(0, path, MAXPATH) < 0 || (ip = namei(path)) == 0){
+		end_op();
+		return -1;
+	}
+	ilock(ip);
+	if(ip->type != T_DIR){
+		iunlockput(ip);
+		end_op();
+		return -1;
+	}
+	iunlock(ip);
+	iput(p->cwd);
+	end_op();
+	p->cwd = ip;
+	return 0;
 }
 
 uint64
