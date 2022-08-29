@@ -19,9 +19,9 @@ main(int argc, char *argv[])
    a:	e44e                	sd	s3,8(sp)
    c:	e052                	sd	s4,0(sp)
    e:	1800                	addi	s0,sp,48
-  int i;
+	int i;
 
-  for(i = 1; i < argc; i++){
+	for(i = 1; i < argc; i++){
   10:	4785                	li	a5,1
   12:	06a7d463          	bge	a5,a0,7a <main+0x7a>
   16:	00858493          	addi	s1,a1,8
@@ -31,12 +31,12 @@ main(int argc, char *argv[])
   24:	098e                	slli	s3,s3,0x3
   26:	05c1                	addi	a1,a1,16
   28:	99ae                	add	s3,s3,a1
-    write(1, argv[i], strlen(argv[i]));
-    if(i + 1 < argc){
-      write(1, " ", 1);
+		write(1, argv[i], strlen(argv[i]));
+		if(i + 1 < argc){
+			write(1, " ", 1);
   2a:	00000a17          	auipc	s4,0x0
   2e:	7eea0a13          	addi	s4,s4,2030 # 818 <malloc+0xe8>
-    write(1, argv[i], strlen(argv[i]));
+		write(1, argv[i], strlen(argv[i]));
   32:	0004b903          	ld	s2,0(s1)
   36:	854a                	mv	a0,s2
   38:	00000097          	auipc	ra,0x0
@@ -46,28 +46,28 @@ main(int argc, char *argv[])
   46:	4505                	li	a0,1
   48:	00000097          	auipc	ra,0x0
   4c:	2d2080e7          	jalr	722(ra) # 31a <write>
-    if(i + 1 < argc){
+		if(i + 1 < argc){
   50:	04a1                	addi	s1,s1,8
   52:	01348a63          	beq	s1,s3,66 <main+0x66>
-      write(1, " ", 1);
+			write(1, " ", 1);
   56:	4605                	li	a2,1
   58:	85d2                	mv	a1,s4
   5a:	4505                	li	a0,1
   5c:	00000097          	auipc	ra,0x0
   60:	2be080e7          	jalr	702(ra) # 31a <write>
-  for(i = 1; i < argc; i++){
+	for(i = 1; i < argc; i++){
   64:	b7f9                	j	32 <main+0x32>
-    } else {
-      write(1, "\n", 1);
+		} else {
+			write(1, "\n", 1);
   66:	4605                	li	a2,1
   68:	00000597          	auipc	a1,0x0
   6c:	7b858593          	addi	a1,a1,1976 # 820 <malloc+0xf0>
   70:	4505                	li	a0,1
   72:	00000097          	auipc	ra,0x0
   76:	2a8080e7          	jalr	680(ra) # 31a <write>
-    }
-  }
-  exit(0);
+		}
+	}
+	exit(0);
   7a:	4501                	li	a0,0
   7c:	00000097          	auipc	ra,0x0
   80:	27e080e7          	jalr	638(ra) # 2fa <exit>

@@ -17,9 +17,9 @@ main(int argc, char **argv)
    6:	e426                	sd	s1,8(sp)
    8:	e04a                	sd	s2,0(sp)
    a:	1000                	addi	s0,sp,32
-  int i;
+	int i;
 
-  if(argc < 2){
+	if(argc < 2){
    c:	4785                	li	a5,1
    e:	02a7dd63          	bge	a5,a0,48 <main+0x48>
   12:	00858493          	addi	s1,a1,8
@@ -29,30 +29,30 @@ main(int argc, char **argv)
   20:	090e                	slli	s2,s2,0x3
   22:	05c1                	addi	a1,a1,16
   24:	992e                	add	s2,s2,a1
-    fprintf(2, "usage: kill pid...\n");
-    exit(1);
-  }
-  for(i=1; i<argc; i++)
-    kill(atoi(argv[i]));
+		fprintf(2, "usage: kill pid...\n");
+		exit(1);
+	}
+	for(i=1; i<argc; i++)
+		kill(atoi(argv[i]));
   26:	6088                	ld	a0,0(s1)
   28:	00000097          	auipc	ra,0x0
   2c:	1b2080e7          	jalr	434(ra) # 1da <atoi>
   30:	00000097          	auipc	ra,0x0
   34:	2da080e7          	jalr	730(ra) # 30a <kill>
-  for(i=1; i<argc; i++)
+	for(i=1; i<argc; i++)
   38:	04a1                	addi	s1,s1,8
   3a:	ff2496e3          	bne	s1,s2,26 <main+0x26>
-  exit(0);
+	exit(0);
   3e:	4501                	li	a0,0
   40:	00000097          	auipc	ra,0x0
   44:	29a080e7          	jalr	666(ra) # 2da <exit>
-    fprintf(2, "usage: kill pid...\n");
+		fprintf(2, "usage: kill pid...\n");
   48:	00000597          	auipc	a1,0x0
   4c:	7b058593          	addi	a1,a1,1968 # 7f8 <malloc+0xe8>
   50:	4509                	li	a0,2
   52:	00000097          	auipc	ra,0x0
   56:	5d2080e7          	jalr	1490(ra) # 624 <fprintf>
-    exit(1);
+		exit(1);
   5a:	4505                	li	a0,1
   5c:	00000097          	auipc	ra,0x0
   60:	27e080e7          	jalr	638(ra) # 2da <exit>

@@ -16,33 +16,33 @@ main(int argc, char *argv[])
    4:	e822                	sd	s0,16(sp)
    6:	e426                	sd	s1,8(sp)
    8:	1000                	addi	s0,sp,32
-  if(argc != 3){
+	if(argc != 3){
    a:	478d                	li	a5,3
    c:	02f50063          	beq	a0,a5,2c <main+0x2c>
-    fprintf(2, "Usage: ln old new\n");
+		fprintf(2, "Usage: ln old new\n");
   10:	00000597          	auipc	a1,0x0
   14:	7e058593          	addi	a1,a1,2016 # 7f0 <malloc+0xe4>
   18:	4509                	li	a0,2
   1a:	00000097          	auipc	ra,0x0
   1e:	606080e7          	jalr	1542(ra) # 620 <fprintf>
-    exit(1);
+		exit(1);
   22:	4505                	li	a0,1
   24:	00000097          	auipc	ra,0x0
   28:	2b2080e7          	jalr	690(ra) # 2d6 <exit>
   2c:	84ae                	mv	s1,a1
-  }
-  if(link(argv[1], argv[2]) < 0)
+	}
+	if(link(argv[1], argv[2]) < 0)
   2e:	698c                	ld	a1,16(a1)
   30:	6488                	ld	a0,8(s1)
   32:	00000097          	auipc	ra,0x0
   36:	304080e7          	jalr	772(ra) # 336 <link>
   3a:	00054763          	bltz	a0,48 <main+0x48>
-    fprintf(2, "link %s %s: failed\n", argv[1], argv[2]);
-  exit(0);
+		fprintf(2, "link %s %s: failed\n", argv[1], argv[2]);
+	exit(0);
   3e:	4501                	li	a0,0
   40:	00000097          	auipc	ra,0x0
   44:	296080e7          	jalr	662(ra) # 2d6 <exit>
-    fprintf(2, "link %s %s: failed\n", argv[1], argv[2]);
+		fprintf(2, "link %s %s: failed\n", argv[1], argv[2]);
   48:	6894                	ld	a3,16(s1)
   4a:	6490                	ld	a2,8(s1)
   4c:	00000597          	auipc	a1,0x0

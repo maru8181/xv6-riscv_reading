@@ -83,22 +83,22 @@ fork1(void)
       7c:	e406                	sd	ra,8(sp)
       7e:	e022                	sd	s0,0(sp)
       80:	0800                	addi	s0,sp,16
-  int pid;
+	int pid;
 
-  pid = fork();
+	pid = fork();
       82:	00001097          	auipc	ra,0x1
       86:	d40080e7          	jalr	-704(ra) # dc2 <fork>
-  if(pid == -1)
+	if(pid == -1)
       8a:	57fd                	li	a5,-1
       8c:	00f50663          	beq	a0,a5,98 <fork1+0x1e>
-    panic("fork");
-  return pid;
+		panic("fork");
+	return pid;
 }
       90:	60a2                	ld	ra,8(sp)
       92:	6402                	ld	s0,0(sp)
       94:	0141                	addi	sp,sp,16
       96:	8082                	ret
-    panic("fork");
+		panic("fork");
       98:	00001517          	auipc	a0,0x1
       9c:	26050513          	addi	a0,a0,608 # 12f8 <malloc+0xf8>
       a0:	00000097          	auipc	ra,0x0
@@ -111,10 +111,10 @@ fork1(void)
       ac:	f022                	sd	s0,32(sp)
       ae:	ec26                	sd	s1,24(sp)
       b0:	1800                	addi	s0,sp,48
-  if(cmd == 0)
+	if(cmd == 0)
       b2:	c10d                	beqz	a0,d4 <runcmd+0x2c>
       b4:	84aa                	mv	s1,a0
-  switch(cmd->type){
+	switch(cmd->type){
       b6:	4118                	lw	a4,0(a0)
       b8:	4795                	li	a5,5
       ba:	02e7e263          	bltu	a5,a4,de <runcmd+0x36>
@@ -126,23 +126,23 @@ fork1(void)
       ce:	439c                	lw	a5,0(a5)
       d0:	97ba                	add	a5,a5,a4
       d2:	8782                	jr	a5
-    exit(1);
+		exit(1);
       d4:	4505                	li	a0,1
       d6:	00001097          	auipc	ra,0x1
       da:	cf4080e7          	jalr	-780(ra) # dca <exit>
-    panic("runcmd");
+		panic("runcmd");
       de:	00001517          	auipc	a0,0x1
       e2:	22250513          	addi	a0,a0,546 # 1300 <malloc+0x100>
       e6:	00000097          	auipc	ra,0x0
       ea:	f6e080e7          	jalr	-146(ra) # 54 <panic>
-    if(ecmd->argv[0] == 0)
+		if(ecmd->argv[0] == 0)
       ee:	6508                	ld	a0,8(a0)
       f0:	c515                	beqz	a0,11c <runcmd+0x74>
-    exec(ecmd->argv[0], ecmd->argv);
+		exec(ecmd->argv[0], ecmd->argv);
       f2:	00848593          	addi	a1,s1,8
       f6:	00001097          	auipc	ra,0x1
       fa:	d0c080e7          	jalr	-756(ra) # e02 <exec>
-    fprintf(2, "exec %s failed\n", ecmd->argv[0]);
+		fprintf(2, "exec %s failed\n", ecmd->argv[0]);
       fe:	6490                	ld	a2,8(s1)
      100:	00001597          	auipc	a1,0x1
      104:	20858593          	addi	a1,a1,520 # 1308 <malloc+0x108>
@@ -153,7 +153,7 @@ fork1(void)
      112:	4501                	li	a0,0
      114:	00001097          	auipc	ra,0x1
      118:	cb6080e7          	jalr	-842(ra) # dca <exit>
-      exit(1);
+			exit(1);
      11c:	4505                	li	a0,1
      11e:	00001097          	auipc	ra,0x1
      122:	cac080e7          	jalr	-852(ra) # dca <exit>
@@ -1351,7 +1351,7 @@ nulterminate(struct cmd *cmd)
      a6c:	e852                	sd	s4,16(sp)
      a6e:	e456                	sd	s5,8(sp)
      a70:	0080                	addi	s0,sp,64
-  while((fd = open("console", O_RDWR)) >= 0){
+	while((fd = open("console", O_RDWR)) >= 0){
      a72:	00001497          	auipc	s1,0x1
      a76:	96e48493          	addi	s1,s1,-1682 # 13e0 <malloc+0x1e0>
      a7a:	4589                	li	a1,2
@@ -1359,40 +1359,40 @@ nulterminate(struct cmd *cmd)
      a7e:	00000097          	auipc	ra,0x0
      a82:	38c080e7          	jalr	908(ra) # e0a <open>
      a86:	00054963          	bltz	a0,a98 <main+0x38>
-    if(fd >= 3){
+		if(fd >= 3){
      a8a:	4789                	li	a5,2
      a8c:	fea7d7e3          	bge	a5,a0,a7a <main+0x1a>
-      close(fd);
+			close(fd);
      a90:	00000097          	auipc	ra,0x0
      a94:	362080e7          	jalr	866(ra) # df2 <close>
-  while(getcmd(buf, sizeof(buf)) >= 0){
+	while(getcmd(buf, sizeof(buf)) >= 0){
      a98:	00001497          	auipc	s1,0x1
      a9c:	9c848493          	addi	s1,s1,-1592 # 1460 <buf.1133>
-    if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){
+		if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){
      aa0:	06300913          	li	s2,99
      aa4:	02000993          	li	s3,32
-      if(chdir(buf+3) < 0)
+			if(chdir(buf+3) < 0)
      aa8:	00001a17          	auipc	s4,0x1
      aac:	9bba0a13          	addi	s4,s4,-1605 # 1463 <buf.1133+0x3>
-        fprintf(2, "cannot cd %s\n", buf+3);
+				fprintf(2, "cannot cd %s\n", buf+3);
      ab0:	00001a97          	auipc	s5,0x1
      ab4:	938a8a93          	addi	s5,s5,-1736 # 13e8 <malloc+0x1e8>
      ab8:	a819                	j	ace <main+0x6e>
-    if(fork1() == 0)
+		if(fork1() == 0)
      aba:	fffff097          	auipc	ra,0xfffff
      abe:	5c0080e7          	jalr	1472(ra) # 7a <fork1>
      ac2:	c925                	beqz	a0,b32 <main+0xd2>
-    wait(0);
+		wait(0);
      ac4:	4501                	li	a0,0
      ac6:	00000097          	auipc	ra,0x0
      aca:	30c080e7          	jalr	780(ra) # dd2 <wait>
-  while(getcmd(buf, sizeof(buf)) >= 0){
+	while(getcmd(buf, sizeof(buf)) >= 0){
      ace:	06400593          	li	a1,100
      ad2:	8526                	mv	a0,s1
      ad4:	fffff097          	auipc	ra,0xfffff
      ad8:	52c080e7          	jalr	1324(ra) # 0 <getcmd>
      adc:	06054763          	bltz	a0,b4a <main+0xea>
-    if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){
+		if(buf[0] == 'c' && buf[1] == 'd' && buf[2] == ' '){
      ae0:	0004c783          	lbu	a5,0(s1)
      ae4:	fd279be3          	bne	a5,s2,aba <main+0x5a>
      ae8:	0014c703          	lbu	a4,1(s1)
@@ -1400,7 +1400,7 @@ nulterminate(struct cmd *cmd)
      af0:	fcf715e3          	bne	a4,a5,aba <main+0x5a>
      af4:	0024c783          	lbu	a5,2(s1)
      af8:	fd3791e3          	bne	a5,s3,aba <main+0x5a>
-      buf[strlen(buf)-1] = 0;  // chop \n
+			buf[strlen(buf)-1] = 0;  // chop \n
      afc:	8526                	mv	a0,s1
      afe:	00000097          	auipc	ra,0x0
      b02:	09e080e7          	jalr	158(ra) # b9c <strlen>
@@ -1409,19 +1409,19 @@ nulterminate(struct cmd *cmd)
      b0c:	9381                	srli	a5,a5,0x20
      b0e:	97a6                	add	a5,a5,s1
      b10:	00078023          	sb	zero,0(a5)
-      if(chdir(buf+3) < 0)
+			if(chdir(buf+3) < 0)
      b14:	8552                	mv	a0,s4
      b16:	00000097          	auipc	ra,0x0
      b1a:	324080e7          	jalr	804(ra) # e3a <chdir>
      b1e:	fa0558e3          	bgez	a0,ace <main+0x6e>
-        fprintf(2, "cannot cd %s\n", buf+3);
+				fprintf(2, "cannot cd %s\n", buf+3);
      b22:	8652                	mv	a2,s4
      b24:	85d6                	mv	a1,s5
      b26:	4509                	li	a0,2
      b28:	00000097          	auipc	ra,0x0
      b2c:	5ec080e7          	jalr	1516(ra) # 1114 <fprintf>
      b30:	bf79                	j	ace <main+0x6e>
-      runcmd(parsecmd(buf));
+			runcmd(parsecmd(buf));
      b32:	00001517          	auipc	a0,0x1
      b36:	92e50513          	addi	a0,a0,-1746 # 1460 <buf.1133>
      b3a:	00000097          	auipc	ra,0x0
