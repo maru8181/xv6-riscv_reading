@@ -5,5 +5,7 @@
 int main(void){
 
 	sbrk(1);
+	exit(0);
+
 	return 0;
 }

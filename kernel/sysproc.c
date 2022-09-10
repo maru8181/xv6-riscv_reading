@@ -47,8 +47,12 @@ sys_sbrk(void)
 	if(argint(0, &n) < 0)
 		return -1;
 	addr = myproc()->sz;
+	printf("%x\n", myproc()->sz);
+	printf("%x\n", myproc()->pagetable);
 	if(growproc(n) < 0)
 		return -1;
+	printf("%x\n", myproc()->sz);
+	printf("%x\n", myproc()->pagetable);
 	return addr;
 }
 
