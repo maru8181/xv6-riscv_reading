@@ -432,3 +432,13 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
     return -1;
   }
 }
+
+void
+debug_uvmpte(uint64 va)
+{
+	pte_t *pte;
+
+	pte = walk(myproc()->pagetable, va, 0);
+	printf("%x\n", *pte);
+
+}
