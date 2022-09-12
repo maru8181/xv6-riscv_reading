@@ -156,7 +156,7 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
 		a += PGSIZE;
 		pa += PGSIZE;
 	}
-  return 0;
+	return 0;
 }
 
 // Remove npages of mappings starting from va. va must be
@@ -433,12 +433,24 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
   }
 }
 
-void
-debug_uvmpte(uint64 va)
+int
+debug_uvmpte(pagetable_t pagetable, uint64 va, uint64 size)
 {
+	uint64 a, last;
 	pte_t *pte;
 
-	pte = walk(myproc()->pagetable, va, 0);
-	printf("%x\n", *pte);
+	a = PGROUNDDOWN(va);
+	last = PGROUNDDOWN(va + size - 1);
+
+	for(;;){
+		if((pte = walk(pagetable, a, 1)) == 0) return -1;
+		if(a == last){
+			printf("%x\n", *pte);
+			break;
+		}
+		a += PGSIZE;
+		printf("%x\n", *pte);
+	}
+	return 0;
 
 }
