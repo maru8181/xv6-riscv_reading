@@ -2360,8 +2360,10 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
     800010c0:	e85a                	sd	s6,16(sp)
     800010c2:	e45e                	sd	s7,8(sp)
     800010c4:	0880                	addi	s0,sp,80
-	uint64 a, last;
+	// uint64 i;
 	pte_t *pte;
+
+	// i = 0;
 
 	if(size == 0)
     800010c6:	c205                	beqz	a2,800010e6 <mappages+0x36>
@@ -2379,8 +2381,8 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
 	a = PGROUNDDOWN(va);
     800010dc:	8952                	mv	s2,s4
     800010de:	41468a33          	sub	s4,a3,s4
-		if(*pte & PTE_V)
 			panic("mappages: remap");
+		}
 		*pte = PA2PTE(pa) | perm | PTE_V;
 		if(a == last)
 			break;
@@ -2408,7 +2410,7 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
     80001112:	00000097          	auipc	ra,0x0
     80001116:	eb6080e7          	jalr	-330(ra) # 80000fc8 <walk>
     8000111a:	cd19                	beqz	a0,80001138 <mappages+0x88>
-		if(*pte & PTE_V)
+		if(*pte & PTE_V){
     8000111c:	611c                	ld	a5,0(a0)
     8000111e:	8b85                	andi	a5,a5,1
     80001120:	fbf9                	bnez	a5,800010f6 <mappages+0x46>
@@ -2824,7 +2826,7 @@ uvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
     80001420:	b7c5                	j	80001400 <uvmdealloc+0x26>
 
 0000000080001422 <uvmalloc>:
-  if(newsz < oldsz)
+	if(newsz < oldsz)
     80001422:	0ab66163          	bltu	a2,a1,800014c4 <uvmalloc+0xa2>
 {
     80001426:	7139                	addi	sp,sp,-64
@@ -2838,27 +2840,27 @@ uvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
     80001436:	0080                	addi	s0,sp,64
     80001438:	8aaa                	mv	s5,a0
     8000143a:	8a32                	mv	s4,a2
-  oldsz = PGROUNDUP(oldsz);
+	oldsz = PGROUNDUP(oldsz);
     8000143c:	6985                	lui	s3,0x1
     8000143e:	19fd                	addi	s3,s3,-1
     80001440:	95ce                	add	a1,a1,s3
     80001442:	79fd                	lui	s3,0xfffff
     80001444:	0135f9b3          	and	s3,a1,s3
-  for(a = oldsz; a < newsz; a += PGSIZE){
+	for(a = oldsz; a < newsz; a += PGSIZE){
     80001448:	08c9f063          	bgeu	s3,a2,800014c8 <uvmalloc+0xa6>
     8000144c:	894e                	mv	s2,s3
-    mem = kalloc();
+		mem = kalloc();
     8000144e:	fffff097          	auipc	ra,0xfffff
     80001452:	6a6080e7          	jalr	1702(ra) # 80000af4 <kalloc>
     80001456:	84aa                	mv	s1,a0
-    if(mem == 0){
+		if(mem == 0){
     80001458:	c51d                	beqz	a0,80001486 <uvmalloc+0x64>
-    memset(mem, 0, PGSIZE);
+		memset(mem, 0, PGSIZE);
     8000145a:	6605                	lui	a2,0x1
     8000145c:	4581                	li	a1,0
     8000145e:	00000097          	auipc	ra,0x0
     80001462:	882080e7          	jalr	-1918(ra) # 80000ce0 <memset>
-    if(mappages(pagetable, a, PGSIZE, (uint64)mem, PTE_W|PTE_X|PTE_R|PTE_U) != 0){
+		if(mappages(pagetable, a, PGSIZE, (uint64)mem, PTE_W|PTE_X|PTE_R|PTE_U) != 0){
     80001466:	4779                	li	a4,30
     80001468:	86a6                	mv	a3,s1
     8000146a:	6605                	lui	a2,0x1
@@ -2867,20 +2869,20 @@ uvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
     80001470:	00000097          	auipc	ra,0x0
     80001474:	c40080e7          	jalr	-960(ra) # 800010b0 <mappages>
     80001478:	e905                	bnez	a0,800014a8 <uvmalloc+0x86>
-  for(a = oldsz; a < newsz; a += PGSIZE){
+	for(a = oldsz; a < newsz; a += PGSIZE){
     8000147a:	6785                	lui	a5,0x1
     8000147c:	993e                	add	s2,s2,a5
     8000147e:	fd4968e3          	bltu	s2,s4,8000144e <uvmalloc+0x2c>
-  return newsz;
+	return newsz;
     80001482:	8552                	mv	a0,s4
     80001484:	a809                	j	80001496 <uvmalloc+0x74>
-      uvmdealloc(pagetable, a, oldsz);
+			uvmdealloc(pagetable, a, oldsz);
     80001486:	864e                	mv	a2,s3
     80001488:	85ca                	mv	a1,s2
     8000148a:	8556                	mv	a0,s5
     8000148c:	00000097          	auipc	ra,0x0
     80001490:	f4e080e7          	jalr	-178(ra) # 800013da <uvmdealloc>
-      return 0;
+			return 0;
     80001494:	4501                	li	a0,0
 }
     80001496:	70e2                	ld	ra,56(sp)
@@ -2892,24 +2894,24 @@ uvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
     800014a2:	6aa2                	ld	s5,8(sp)
     800014a4:	6121                	addi	sp,sp,64
     800014a6:	8082                	ret
-      kfree(mem);
+			kfree(mem);
     800014a8:	8526                	mv	a0,s1
     800014aa:	fffff097          	auipc	ra,0xfffff
     800014ae:	54e080e7          	jalr	1358(ra) # 800009f8 <kfree>
-      uvmdealloc(pagetable, a, oldsz);
+			uvmdealloc(pagetable, a, oldsz);
     800014b2:	864e                	mv	a2,s3
     800014b4:	85ca                	mv	a1,s2
     800014b6:	8556                	mv	a0,s5
     800014b8:	00000097          	auipc	ra,0x0
     800014bc:	f22080e7          	jalr	-222(ra) # 800013da <uvmdealloc>
-      return 0;
+			return 0;
     800014c0:	4501                	li	a0,0
     800014c2:	bfd1                	j	80001496 <uvmalloc+0x74>
-    return oldsz;
+		return oldsz;
     800014c4:	852e                	mv	a0,a1
 }
     800014c6:	8082                	ret
-  return newsz;
+	return newsz;
     800014c8:	8532                	mv	a0,a2
     800014ca:	b7f1                	j	80001496 <uvmalloc+0x74>
 
