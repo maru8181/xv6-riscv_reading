@@ -138,7 +138,10 @@ int
 mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
 {
 	uint64 a, last;
+	// uint64 i;
 	pte_t *pte;
+
+	// i = 0;
 
 	if(size == 0)
 		panic("mappages: size");
@@ -146,10 +149,15 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
 	a = PGROUNDDOWN(va);
 	last = PGROUNDDOWN(va + size - 1);
 	for(;;){
+		// i++;
 		if((pte = walk(pagetable, a, 1)) == 0)
 			return -1;
-		if(*pte & PTE_V)
+		// printf("%x\n", *pte);
+		if(*pte & PTE_V){
+			// printf("%x\n", *pte);
+			// printf("%d\n", i);
 			panic("mappages: remap");
+		}
 		*pte = PA2PTE(pa) | perm | PTE_V;
 		if(a == last)
 			break;
@@ -220,27 +228,27 @@ uvminit(pagetable_t pagetable, uchar *src, uint sz)
 uint64
 uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
 {
-  char *mem;
-  uint64 a;
+	char *mem;
+	uint64 a;
 
-  if(newsz < oldsz)
-    return oldsz;
+	if(newsz < oldsz)
+		return oldsz;
 
-  oldsz = PGROUNDUP(oldsz);
-  for(a = oldsz; a < newsz; a += PGSIZE){
-    mem = kalloc();
-    if(mem == 0){
-      uvmdealloc(pagetable, a, oldsz);
-      return 0;
-    }
-    memset(mem, 0, PGSIZE);
-    if(mappages(pagetable, a, PGSIZE, (uint64)mem, PTE_W|PTE_X|PTE_R|PTE_U) != 0){
-      kfree(mem);
-      uvmdealloc(pagetable, a, oldsz);
-      return 0;
-    }
-  }
-  return newsz;
+	oldsz = PGROUNDUP(oldsz);
+	for(a = oldsz; a < newsz; a += PGSIZE){
+		mem = kalloc();
+		if(mem == 0){
+			uvmdealloc(pagetable, a, oldsz);
+			return 0;
+		}
+		memset(mem, 0, PGSIZE);
+		if(mappages(pagetable, a, PGSIZE, (uint64)mem, PTE_W|PTE_X|PTE_R|PTE_U) != 0){
+			kfree(mem);
+			uvmdealloc(pagetable, a, oldsz);
+			return 0;
+		}
+	}
+	return newsz;
 }
 
 // Deallocate user pages to bring the process size from oldsz to
