@@ -154,7 +154,7 @@ mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm)
 			return -1;
 		// printf("%x\n", *pte);
 		if(*pte & PTE_V){
-			// printf("%x\n", *pte);
+			printf("%x\n", *pte);
 			// printf("%d\n", i);
 			panic("mappages: remap");
 		}
