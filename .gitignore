@@ -1,0 +1,11 @@
+fs.img
+LICENSE
+tags
+kernel/kernel/
+kernel/*.o
+kernel/*.asm
+kernel/*.sym
+user/*.o
+user/*.asm
+user/*.sym
+
